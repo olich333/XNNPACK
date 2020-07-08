@@ -101,7 +101,6 @@ BEGIN_FUNCTION xnn_f32_gemm_minmax_ukernel_4x8__aarch32_neon_ld64
         VLD1.32    {d2}, [r10]!      // A2
         VLD1.32    {d3}, [ r0]!      // A3
         VLDM        r9!, {d12-d15}   // B1
-
         VMLA.F32     q8, q4, d0[0]
         VMLA.F32     q9, q5, d0[0]
         VMLA.F32    q10, q4, d1[0]

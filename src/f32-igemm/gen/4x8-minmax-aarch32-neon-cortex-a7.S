@@ -11,7 +11,7 @@
 
 .syntax unified
 
-// void xnn_f32_igemm_minmax_ukernel_4x8__aarch32_neon_pld_ld64(
+// void xnn_f32_igemm_minmax_ukernel_4x8__aarch32_neon_cortex_a7(
 //     size_t mr,                            r0
 //     size_t nc,                            r1
 //     size_t kc,                            r2 -> r5 -> sp + 68
@@ -42,7 +42,7 @@
 
 // Clamp (r5) d4 d5 d6 d7
 
-BEGIN_FUNCTION xnn_f32_igemm_minmax_ukernel_4x8__aarch32_neon_pld_ld64
+BEGIN_FUNCTION xnn_f32_igemm_minmax_ukernel_4x8__aarch32_neon_cortex_a7
         .arm
 #ifndef __APPLE__
         .arch armv7-a
@@ -142,19 +142,14 @@ BEGIN_FUNCTION xnn_f32_igemm_minmax_ukernel_4x8__aarch32_neon_pld_ld64
 
         VMLA.F32     q8, q4, d0[0]
         VMLA.F32     q9, q5, d0[0]
-        PLD         [r3, 128]        // Prefetch A0
         VMLA.F32    q10, q4, d1[0]
         VMLA.F32    q11, q5, d1[0]
-        PLD         [r12, 128]       // Prefetch A1
         VMLA.F32    q12, q4, d2[0]
         VMLA.F32    q13, q5, d2[0]
-        PLD         [r10, 128]       // Prefetch A2
         VMLA.F32    q14, q4, d3[0]
         VMLA.F32    q15, q5, d3[0]
-        PLD         [r0, 128]        // Prefetch A3
         VMLA.F32     q8, q6, d0[1]
         VMLA.F32     q9, q7, d0[1]
-        PLD         [r9, 448]        // Prefetch B
         VMLA.F32    q10, q6, d1[1]
         VMLA.F32    q11, q7, d1[1]
         SUBS         r5, r5, 8
@@ -162,6 +157,11 @@ BEGIN_FUNCTION xnn_f32_igemm_minmax_ukernel_4x8__aarch32_neon_pld_ld64
         VMLA.F32    q13, q7, d2[1]
         VMLA.F32    q14, q6, d3[1]
         VMLA.F32    q15, q7, d3[1]
+        PLD         [r9, 448]        // Prefetch B
+        PLD         [r3, 128]        // Prefetch A0
+        PLD         [r12, 128]       // Prefetch A1
+        PLD         [r10, 128]       // Prefetch A2
+        PLD         [r0, 128]        // Prefetch A3
         BHS         2b
 
         // Is there a remainder?- 1 floats of A (4 bytes)
@@ -263,7 +263,7 @@ BEGIN_FUNCTION xnn_f32_igemm_minmax_ukernel_4x8__aarch32_neon_pld_ld64
         ADD         sp, sp, 12  // skip pad, r2, r3
         POP         {r4, r5, r6, r7, r8, r9, r10, r11, pc}
 
-END_FUNCTION xnn_f32_igemm_minmax_ukernel_4x8__aarch32_neon_pld_ld64
+END_FUNCTION xnn_f32_igemm_minmax_ukernel_4x8__aarch32_neon_cortex_a7
 
 #ifdef __ELF__
 .section ".note.GNU-stack","",%progbits
