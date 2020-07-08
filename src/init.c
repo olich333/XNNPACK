@@ -1027,9 +1027,9 @@ static void init(void) {
     xnn_params.f32.sqr = (xnn_univector_ukernel_function) xnn_f32_vsqr_ukernel__neon_x8;
     xnn_params.f32.sqrt = (xnn_univector_ukernel_function) xnn_f32_vsqrt_ukernel__neon_sqrt_x4;
     xnn_params.f32.prelu = (struct prelu_parameters) {
-      .ukernel = (xnn_prelu_ukernel_function) xnn_f32_prelu_ukernel__neon_2x8,
-      .row_tile = 2,
-      .channel_tile = 8,
+      .ukernel = (xnn_prelu_ukernel_function) xnn_f32_prelu_ukernel__neon_4x16,
+      .row_tile = 4,
+      .channel_tile = 16,
     };
     xnn_params.f32.raddstoreexpminusmax = xnn_f32_raddstoreexpminusmax_ukernel__neonfma_lut64_p2_x16;
     xnn_params.f32.rmax = xnn_f32_rmax_ukernel__neon;

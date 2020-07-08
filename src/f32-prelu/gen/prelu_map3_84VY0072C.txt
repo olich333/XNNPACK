@@ -1,0 +1,2 @@
+xnnpack_prelu_f32                                        922678           15
+tflite_prelu_f32                                         9769466          15
